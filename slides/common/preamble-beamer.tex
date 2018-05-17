@@ -1,0 +1,107 @@
+\usepackage{subfig}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Set up beamer style
+%%\usepackage[orientation=landscape,size=custom,width=16,height=9,scale=0.5]{beamerposter}
+%%\setbeamertemplate{navigation symbols}{}
+
+%% Kaspersky logo
+%% \usebackgroundtemplate{
+%%     \begin{tikzpicture}[remember picture,overlay]
+%%         \node[anchor=south east,inner sep=0pt] (fig1) at ($(current page.south east)$)
+%%         {\includegraphics[scale=0.5]{img/KasperskyLogoMedium.png}};
+%%      \end{tikzpicture}}
+
+%% colors
+\setbeamercolor{titlelike}{fg=base02}
+\setbeamercolor{frametitle}{fg=base02}
+
+% slide numbering
+\setbeamertemplate{footline}{ \small\insertframenumber\hfill\phantom{\\}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make each frame appear in PDF TOC.
+\usepackage{bookmark}
+\usepackage{etoolbox}
+\makeatletter
+% save the current definition of \beamer@@frametitle
+\let\nobookmarkbeamer@@frametitle\beamer@@frametitle
+% then patch it to do the bookmarks and/or TOC entries
+\apptocmd{\beamer@@frametitle}{%
+  % keep this to add the frame title to the TOC at the "subsection level"
+  \addtocontents{toc}{\protect\beamer@subsectionintoc{\the\c@section}{0}{#1}{\the\c@page}{\the\c@part}%
+        {\the\beamer@tocsectionnumber}}%
+  % keep this line to add a bookmark that shows up in the PDF TOC at the subsection level
+  \bookmark[page=\the\c@page,level=3]{#1}%
+  }%
+  {\message{** patching of \string\beamer@@frametitle succeeded **}}%
+  {\errmessage{** patching of \string\beamer@@frametitle failed **}}%
+\pretocmd{\beamer@checknoslide}{%
+  % ensure the bookmark is not created if the slide is filtered out
+  \let\beamer@@frametitle\nobookmarkbeamer@@frametitle
+  }%
+  {\message{** patching of \string\beamer@checknoslide succeeded **}}%
+  {\errmessage{** patching of \string\beamer@checknoslide failed **}}%
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make all text justified.
+
+% Justify normal text (/not/ to blocks or list-like environments).
+\usepackage{ragged2e}
+\apptocmd{\frame}{}{\justifying}{}
+
+\let\oldenumerate\enumerate
+\renewenvironment{enumerate}{\oldenumerate\justifying}{\endlist}
+
+\makeatletter
+\renewcommand{\itemize}[1][]{%
+  \beamer@ifempty{#1}{}{\def\beamer@defaultospec{#1}}%
+  \ifnum \@itemdepth >2\relax\@toodeep\else
+    \advance\@itemdepth\@ne
+    \beamer@computepref\@itemdepth% sets \beameritemnestingprefix
+    \usebeamerfont{itemize/enumerate \beameritemnestingprefix body}%
+    \usebeamercolor[fg]{itemize/enumerate \beameritemnestingprefix body}%
+    \usebeamertemplate{itemize/enumerate \beameritemnestingprefix body begin}%
+    \list
+      {\usebeamertemplate{itemize \beameritemnestingprefix item}}
+      {\def\makelabel##1{%
+          {%
+            \hss\llap{{%
+                \usebeamerfont*{itemize \beameritemnestingprefix item}%
+                \usebeamercolor[fg]{itemize \beameritemnestingprefix item}##1}}%
+          }%
+        }%
+      }
+  \fi%
+  \beamer@cramped%
+  \justifying% <== OUR MODIFICATION
+  %\raggedright% <== ORIGINAL LINE
+  \beamer@firstlineitemizeunskip%
+}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\usepackage{fontspec}
+%% \setmainfont{Fira Sans Light}
+%% \setsansfont{Fira Sans Light}
+%% \setmonofont[Scale=0.6]{Fira Mono}
+\setmainfont{Liberation Sans}
+\setsansfont{Liberation Sans}
+\setmonofont[Scale=0.75]{Consolas}
+
+
+\input{common/preamble-colors.tex}
+\input{common/preamble-listings.tex}
+
+%% Never break line in inline math formulas.
+\sloppy
+\binoppenalty=10000
+\relpenalty=10000 
+

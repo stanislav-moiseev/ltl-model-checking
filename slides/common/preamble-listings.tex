@@ -1,0 +1,44 @@
+%% TODO: it didn't work for me
+%%\PassOptionsToPackage{procnames}{listings}
+
+\usepackage{caption}
+\captionsetup[lstlisting]{font={small,tt,it,color=base02}}
+
+\lstset{
+  language         = C, %% for comment highlighting only
+                        %% TODO: remove C lang dependence
+  frame            = single,
+  showstringspaces = false,
+  basicstyle       = \linespread{0.65}\ttfamily\color{base02},
+  backgroundcolor  = \color{base3},
+  keywordstyle     = \color{green},
+  stringstyle      = \color{cyan},
+  commentstyle     = \it\color{base1},
+  emphstyle        = \color{blue},
+  %  procnamestyle = \color{blue},
+  keywords         = {},
+}
+
+\lstdefinestyle{idl}{
+  keywords = {  package, import,
+                rawtype, typedef, const, struct, union, array, sequence,
+                entity, security, component, interface, async, in, out },
+}
+
+\lstdefinestyle{cfg}{
+  keywords  = {  settings, audit, use, declare, family, interface, parser, call, attr, policy,
+                 entity, execute, init, security,
+                 call, send, receive, in, out, choice, _ },
+%  procnamekeys = {},
+}
+
+\lstdefinestyle{tl}{
+  emph     = {  event, alias,
+                YES, NO, UNTIL, SINCE,
+                NEXT, ALWAYS, NEVER, EVENTUALLY },
+}
+
+\lstdefinestyle{c}
+  { language     = C
+  , morekeywords = {inline}
+  }
