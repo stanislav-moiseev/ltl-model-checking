@@ -1,0 +1,30 @@
+name:           model-checking
+synopsis:       Finite-state model checking for linear temporal logic.
+maintainer:     Stanislav Moiseev <stanislav.moiseev@gmail.com>
+copyright:      (C) 2018 Stanislav Moiseev
+
+extra-source-files:
+  - README.md
+
+dependencies:
+  - base        >= 4.7 && < 5
+  - containers  >= 0.5.11       # version required for Data.Set.poserSet
+
+ghc-options:
+  - -O2
+
+library:
+  source-dirs:
+    - src
+
+executables:
+  test1:
+    main: test/Test1.hs
+    dependencies:
+      - model-checking
+    ghc-options:
+      - -O2
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts "-c -N"
+
